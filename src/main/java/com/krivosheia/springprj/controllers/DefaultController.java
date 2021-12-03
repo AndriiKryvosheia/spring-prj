@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/homework01")
+@RequestMapping("/spring-prj")
 public class DefaultController {
 
-    @GetMapping
+    @GetMapping("/homework02")
     public ResponseEntity<String> index() {
         return ResponseEntity.ok("Hello World!");
     }
