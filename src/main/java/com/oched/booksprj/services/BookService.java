@@ -7,6 +7,8 @@ import com.oched.booksprj.repositories.BookContentRepository;
 import com.oched.booksprj.requests.AddBookRequest;
 import com.oched.booksprj.repositories.AuthorRepository;
 import com.oched.booksprj.repositories.BookRepository;
+import com.oched.booksprj.requests.DeleteBookRequest;
+import com.oched.booksprj.requests.UpdateBookRequest;
 import com.oched.booksprj.responses.BookResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,46 @@ public class BookService {
         );
 
         bookRepository.save(newBook);
+    }
+
+    public void updateBook(UpdateBookRequest request) {
+        Optional<AuthorEntity> optionalAuthor = authorRepository.findByFirstNameAndLastName(
+                request.getAuthorFirstName(),
+                request.getAuthorLastName()
+        );
+        AuthorEntity author;
+        if(optionalAuthor.isPresent()) {
+            author = optionalAuthor.get();
+        } else {
+            author = new AuthorEntity(
+                    request.getAuthorFirstName(),
+                    request.getAuthorLastName()
+            );
+            authorRepository.save(author);
+        }
+        BookContentEntity bookContent = new BookContentEntity(request.getContent());
+        contentRepository.save(bookContent);
+
+        Optional<BookDescriptionEntity> optionalBook = bookRepository.findByTitle(request.getTitle());
+        BookDescriptionEntity book;
+        if(optionalBook.isPresent()) {
+            book = optionalBook.get();
+            book.setYear(request.getYear());
+            book.setAuthor(author);
+            book.setContent(bookContent);
+            bookRepository.save(book);
+        }
+
+    }
+
+    public void deleteBook(DeleteBookRequest request) {
+        Optional<BookDescriptionEntity> optionalBook = bookRepository.findByTitle(request.getTitle());
+        BookDescriptionEntity book;
+        if(optionalBook.isPresent()) {
+            book = optionalBook.get();
+            bookRepository.delete(book);
+        }
+
     }
 
     public List<BookResponse> getAll() {

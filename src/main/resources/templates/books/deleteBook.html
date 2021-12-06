@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delete Book</title>
+</head>
+<body>
+
+<form th:action="@{../books/delete}" method="post" th:object="${request}">
+    <p>Title : <input type="text" name="title"></p>
+<!--    <p>Year : <input type="text" name="year"></p>-->
+<!--    <p>Author first name: <input type="text" name="authorFirstName"></p>-->
+<!--    <p>Author last name: <input type="text" name="authorLastName"></p>-->
+<!--    <p>Book content:</p>-->
+<!--    <textarea name="content" rows="20" cols="55">-->
+<!--        "And all these sorrows I have seen.-->
+<!--        They lead me to believe.-->
+<!--        That everything is actually a mess."-->
+<!--    </textarea>-->
+    <br>
+    <br>
+    <input type="submit" value="Pass data">
+</form>
+
+<hr>
+<h3><a href="/books/all">Books list...</a></h3>
+<h3><a href="/">Go to main...</a></h3>
+</body>
+</html>
