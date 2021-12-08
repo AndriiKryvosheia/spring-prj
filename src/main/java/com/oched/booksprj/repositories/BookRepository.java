@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<BookDescriptionEntity, Long> {
-
-    Optional<BookDescriptionEntity> findByTitleAndYearOrderByYearAsc(String title, int year);
+    Optional<BookDescriptionEntity> findByTitle(String title);
 }
