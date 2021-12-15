@@ -3,6 +3,8 @@ package com.oched.booksprj.repositories;
 import com.oched.booksprj.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+import java.util.Optional;
 
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+    Optional<UserEntity> findByLogin(String login);
 }

@@ -3,6 +3,8 @@ package com.oched.booksprj.services;
 import com.oched.booksprj.entities.UserEntity;
 import com.oched.booksprj.enumerations.UserRole;
 import com.oched.booksprj.repositories.UserRepository;
+import com.oched.booksprj.requests.ActionRequest;
+import com.oched.booksprj.requests.DeleteUserRequest;
 import com.oched.booksprj.requests.NewUserRequest;
 import com.oched.booksprj.responses.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,8 +28,11 @@ public class UserService {
         List<UserRole> roleList = new ArrayList<>();
         roleList.add(UserRole.ROLE_USER);
 
-        if(request.getRole().equals("ADMIN")) {
+        if(request.getRole().equals("ADMIN") || request.getRole().equals("SUPERADMIN")){
             roleList.add(UserRole.ROLE_ADMIN);
+        }
+        if(request.getRole().equals("SUPERADMIN")) {
+            roleList.add(UserRole.ROLE_SUPERADMIN);
         }
 
         this.userRepository.save(new UserEntity(
@@ -51,5 +57,13 @@ public class UserService {
                         user.getEmail()
                 )
         ).collect(Collectors.toList());
+    }
+
+    public void deleteUser(DeleteUserRequest request) {
+        Optional<UserEntity> optionalUser = userRepository.findByLogin(request.getLogin());
+        if(optionalUser.isPresent()) {
+            UserEntity user = optionalUser.get();
+            userRepository.delete(user);
+        }
     }
 }

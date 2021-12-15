@@ -41,10 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
+                .mvcMatchers("/users/delete")
+                .hasRole("SUPERADMIN")
                 .mvcMatchers("/users/add", "/books/add", "/books/edit", "/books/delete")
-                .hasRole("ADMIN")
+                .hasAnyRole("SUPERADMIN", "ADMIN")
                 .mvcMatchers("/books/all", "/users/all", "/hello/**")
-                .hasAnyRole("ADMIN","USER")
+                .hasAnyRole("SUPERADMIN", "ADMIN","USER")
                 .antMatchers(
                         "/", "/login", "/registration", "/perform_logout"
                 ).permitAll()

@@ -1,5 +1,7 @@
 package com.oched.booksprj.controllers;
 
+import com.oched.booksprj.requests.ActionRequest;
+import com.oched.booksprj.requests.DeleteUserRequest;
 import com.oched.booksprj.requests.NewUserRequest;
 import com.oched.booksprj.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,4 +40,17 @@ public class UsersController {
 
         return modelAndView;
     }
+
+    @GetMapping(value = "/delete")
+    public String deleteUserForm() {
+        return "/users/deleteUser";
+    }
+
+    @PostMapping(value = "/delete")
+    public String deleteUser(final @ModelAttribute("request") DeleteUserRequest request) {
+        this.userService.deleteUser(request);
+
+        return "redirect:/users/all";
+    }
+
 }
